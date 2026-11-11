@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ec4899">
+  <title>Para Rebeca 💖</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 16px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: #4a2040;
+      font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+      background: linear-gradient(160deg, #ffd1e3 0%, #ffe6f1 48%, #e9d5ff 100%);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    #app {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 460px);
+    }
+
+    .win {
+      display: flex;
+      flex-direction: column;
+      max-height: 92dvh;
+      overflow: hidden;
+      background: #fff;
+      border: 2px solid #f48fb9;
+      border-radius: 20px;
+      box-shadow: 0 14px 40px rgba(190, 60, 120, .28);
+      animation: pop .4s ease-out;
+    }
+
+    .win.out {
+      animation: out .22s ease forwards;
+    }
+
+    .win.shake {
+      animation: shake .35s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(.96) translateY(10px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    @keyframes out {
+      to { transform: scale(.97); opacity: 0; }
+    }
+
+    @keyframes shake {
+      25% { transform: translateX(-7px); }
+      50% { transform: translateX(7px); }
+      75% { transform: translateX(-4px); }
+    }
+
+    .title {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 14px 13px 18px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ec4899, #f472b6);
+    }
+
+    .title span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .x {
+      flex-shrink: 0;
+      width: 38px;
+      height: 34px;
+      border: 0;
+      border-radius: 10px;
+      color: #fff;
+      background: rgba(255, 255, 255, .24);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .content {
+      padding: 20px 18px 10px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .content h2 {
+      margin-bottom: 10px;
+      color: #be185d;
+      font-size: 21px;
+      line-height: 1.3;
+    }
+
+    .content p {
+      margin-bottom: 14px;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .big {
+      margin: 2px 0 12px;
+      text-align: center;
+      font-size: 56px;
+    }
+
+    .fotos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .foto-card {
+      position: relative;
+      display: grid;
+      min-height: 185px;
+      overflow: hidden;
+      place-items: center;
+      border: 3px solid #fbcfe8;
+      border-radius: 16px;
+      background: #fff0f7;
+      box-shadow: 0 5px 16px rgba(190, 60, 120, .16);
+    }
+
+    .foto-card img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 185px;
+      object-fit: cover;
+    }
+
+    .foto-fallback {
+      padding: 12px;
+      color: #9d174d;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .player {
+      margin: 16px 0 6px;
+    }
+
+    .song {
+      margin-bottom: 8px;
+      color: #be185d;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .player iframe {
+      display: block;
+      width: 100%;
+      height: 152px;
+      border: 0;
+      border-radius: 12px;
+      background: #f3f4f6;
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 0 2px;
+    }
+
+    .dots i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fbcfe8;
+    }
+
+    .dots i.on {
+      background: #ec4899;
+    }
+
+    .ask-wrap {
+      flex-shrink: 0;
+      border-top: 1px solid #fbcfe8;
+      background: #fff0f7;
+    }
+
+    .ask {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px 12px;
+    }
+
+    .ask .ico {
+      flex-shrink: 0;
+      font-size: 30px;
+    }
+
+    .ask .q {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 8px 18px 18px;
+    }
+
+    .btn {
+      min-height: 54px;
+      padding: 12px 8px;
+      border: 2px solid #ec4899;
+      border-radius: 13px;
+      color: #be185d;
+      background: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .12s, background .12s;
+    }
+
+    .btn:first-child {
+      color: #fff;
+      background: #ec4899;
+    }
+
+    .btn:active {
+      transform: scale(.96);
+    }
+
+    .letter p {
+      font-size: 16px;
+    }
+
+    .sign {
+      color: #be185d;
+      text-align: right;
+      font-size: 24px !important;
+    }
+
+    .heart {
+      position: fixed;
+      z-index: 0;
+      bottom: -40px;
+      pointer-events: none;
+      opacity: .55;
+      animation: rise linear forwards;
+    }
+
+    @keyframes rise {
+      to {
+        transform: translateY(-115vh) rotate(25deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body { padding: 10px; }
+      .content { padding: 16px 14px 8px; }
+      .foto-card, .foto-card img { min-height: 150px; }
+      .ask { padding-inline: 14px; }
+      .btns { padding-inline: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <script>
+    const NOME = "Rebeca Ganacin Mesquita";
+    const SPOTIFY_EMBED = "https://open.spotify.com/embed/track/";
+
+    const motivos = [
+      {
+        t: "Você é quem eu conto pra tudo",
+        p: "Tudo mesmo. Quando eu tô triste, você vem e sempre me dá os melhores conselhos e me faz melhorar automaticamente. Parece que você sempre sabe exatamente o que falar, mesmo quando nem eu sei o que eu tô sentindo. Você me escuta de verdade, sem me julgar, e isso faz uma diferença enorme pra mim. Saber que eu tenho você pra desabafar me deixa muito mais leve.",
+        s: "The Neighbourhood – Sweater Weather",
+        id: "2QjOHCTQ1Jl3zawyYOpxh6"
+      },
+      {
+        t: "Sua personalidade alegre",
+        p: "Você é uma menina muito alegre e quando eu tô com você eu esqueço de todos os meus problemas. Você me faz rir muito e eu amo o fato de sermos dois idiotas que pensam igual. Qualquer coisa boba vira motivo de risada quando a gente tá junto, e eu nem preciso me esforçar pra ser eu mesmo do seu lado. Essa alegria que você carrega deixa qualquer dia ruim bem melhor, e eu agradeço muito por isso.",
+        s: "Travis Scott – goosebumps",
+        id: "6gBFPUFcJLzWGx4lenP6h2"
+      },
+      {
+        t: "Filha dedicada que ama a família",
+        p: "Que ama muito sua família. Pra mim é nítido o quanto você se esforça por eles. Dá pra ver no jeito que você fala da sua família que tudo o que você faz tem o coração envolvido. Você cuida, se preocupa e quer ver todo mundo bem, e isso mostra o tamanho do seu caráter. Qualquer pai e mãe teria muito orgulho de ter uma filha como você.",
+        s: "Frank Ocean – Godspeed",
+        id: "34xTFwjPQ1dC6uJmleno7x"
+      },
+      {
+        t: "Como você ajuda quem você ama",
+        p: "Não importa quem seja, eu sei que se alguém precisa de você, você dá o seu máximo pra fazer a pessoa se sentir bem. E isso é muito fofo, o carinho que você demonstra com todo mundo. Você não espera nada em troca, só quer ver a pessoa bem. Eu já senti isso na pele várias vezes e nunca vou esquecer. Você faz o mundo ser um lugar melhor só por ser desse jeito.",
+        s: "Olivia Rodrigo – hope ur ok",
+        id: "1zejeOnykpCoyVSit6Bwp3"
+      },
+      {
+        t: "Como você ama os animais",
+        p: "Você me disse uma vez que queria fazer veterinária, isso já diz muito. Mas a forma que você ama suas cachorrinhas é muito fofa de ver. O carinho, a paciência e o cuidado que você tem com elas mostram o quanto seu coração é grande. Ver você com elas me faz sorrir sem perceber, dá pra sentir que o amor é de verdade. Os animais têm muita sorte de ter você, e acho que você vai ser uma veterinária incrível se seguir esse sonho.",
+        s: "Lana Del Rey – Love",
+        id: "2Kerz9H9IejzeIpjhDJoYG",
+        fotos: true
+      },
+      {
+        t: "Você é perfeita só por ser você",
+        p: "Eu não sei explicar, mas você é uma das poucas pessoas que eu conheço que consegue transmitir o que você transmite. A paz de estar com você, a alegria, seu sorriso, sua risada é contagiante e seus olhinhos lindinhos. Quando eu olho pra você eu sinto paz e confiança, e olho com uma admiração muito grande por quem você é.",
+        s: "",
+        id: "0YNtAadZvKBBEFARtfoCV8"
+      },
+      {
+        t: "Sua relação com Deus",
+        p: "Você é uma serva muito fiel a Ele e sua relação com Ele é de um pai e de um melhor amigo, alguém que você conta tudo. E isso é muito admirável de ver, a maneira que você se esforça pra estar mais perto Dele.",
+        s: "Lugar Secreto",
+        id: "4D9IlElQlDZrIjvHnPDxbZ"
+      }
+    ];
+
+    const carta = [
+      "Espero que você tenha gostado, dei o meu melhor pra fazer isso. Nunca esqueça da menina incrível que você é, cheia da presença de Deus. Eu desejo do fundo do meu coração que todos os seus sonhos se realizem e desejo que esses 16 anos sejam incríveis.",
+      "Eu fiz com 7 motivos porque na Bíblia, frequentemente, o número 7 é associado à perfeição. E pra mim você chega muito perto de ser perfeita, Rebeca.",
+      "Eu te amo e conta comigo pra tudo."
+    ];
+
+    const app = document.getElementById("app");
+    let step = -1;
+
+    function dots(current) {
+      let result = '<div class="dots" aria-label="Progresso">';
+      for (let i = 0; i < 7; i++) {
+        result += `<i class="${i <= current ? "on" : ""}"></i>`;
+      }
+      return result + "</div>";
+    }
+
+    function buttons() {
+      return `
+        <div class="btns">
+          <button class="btn" data-next>Sim</button>
+          <button class="btn" data-next>Claro</button>
+        </div>
+      `;
+    }
+
+    function fotos() {
+      return `
+        <div class="fotos">
+          <div class="foto-card">
+            <img src="foto1.jpg" alt="Cachorrinha golden"
+              onerror="this.hidden=true; this.nextElementSibling.hidden=false">
+            <span class="foto-fallback" hidden>
+              Não encontrei <strong>foto1.jpg</strong>.<br>
+              Envie essa foto junto com o index.html.
+            </span>
+          </div>
+          <div class="foto-card">
+            <img src="foto2.jpg" alt="Cachorrinha shih tzu"
+              onerror="this.hidden=true; this.nextElementSibling.hidden=false">
+            <span class="foto-fallback" hidden>
+              Não encontrei <strong>foto2.jpg</strong>.<br>
+              Envie essa foto junto com o index.html.
+            </span>
+          </div>
+        </div>
+      `;
+    }
+
+    function player(m) {
+      return `
+        <div class="player">
+          ${m.s ? `<div class="song">🎵 ${m.s}</div>` : ""}
+          <iframe
+            src="${SPOTIFY_EMBED}${m.id}"
+            title="Música: ${m.s || "Spotify"}"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+      `;
+    }
+
+    function render() {
+      let content = "";
+
+      if (step === -1) {
+        content = `
+          <div class="win">
+            <div class="title">
+              <span>💖 Aviso</span>
+              <button class="x" data-x aria-label="Fechar">✕</button>
+            </div>
+            <div class="content">
+              <div class="big">💌</div>
+            </div>
+            <div class="ask-wrap">
+              <div class="ask">
+                <div class="ico">❓</div>
+                <div class="q">
+                  Deseja ver os motivos por que ${NOME} é a mulher mais perfeita do mundo?
+                </div>
+              </div>
+              ${buttons()}
+            </div>
+          </div>
+        `;
+      } else if (step < 7) {
+        const m = motivos[step];
+        const pergunta = step < 6
+          ? `Deseja ver o motivo ${step + 2}?`
+          : "Deseja ver a carta final?";
+
+        content = `
+          <div class="win">
+            <div class="title">
+              <span>💗 Motivo ${step + 1} de 7</span>
+              <button class="x" data-x aria-label="Fechar">✕</button>
+            </div>
+            <div class="content">
+              <h2>${step + 1}. ${m.t}</h2>
+              <p>${m.p}</p>
+              ${m.fotos ? fotos() : ""}
+              ${player(m)}
+              ${dots(step)}
+            </div>
+            <div class="ask-wrap">
+              <div class="ask">
+                <div class="ico">❓</div>
+                <div class="q">${pergunta}</div>
+              </div>
+              ${buttons()}
+            </div>
+          </div>
+        `;
+      } else {
+        content = `
+          <div class="win">
+            <div class="title">
+              <span>💝 Carta final</span>
+              <button class="x" data-x aria-label="Fechar">✕</button>
+            </div>
+            <div class="content letter">
+              <div class="big">🎀</div>
+              <h2>Feliz aniversário, Rebeca! 🎂</h2>
+              ${carta.map(paragrafo => `<p>${paragrafo}</p>`).join("")}
+              <p class="sign">💖</p>
+              <div class="big">💐</div>
+            </div>
+            <div class="ask-wrap">
+              <div class="ask">
+                <div class="ico">💖</div>
+                <div class="q">Com carinho, para você!</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      app.innerHTML = content;
+      const win = app.firstElementChild;
+
+      win.querySelectorAll("[data-next]").forEach(button => {
+        button.addEventListener("click", () => {
+          win.classList.add("out");
+          setTimeout(() => {
+            step++;
+            render();
+            soltarCoracoes(5);
+          }, 220);
+        });
+      });
+
+      const closeButton = win.querySelector("[data-x]");
+      closeButton.addEventListener("click", () => {
+        win.classList.remove("shake");
+        void win.offsetWidth;
+        win.classList.add("shake");
+      });
+    }
+
+    function criarCoracao() {
+      const heart = document.createElement("div");
+      const emojis = ["💖", "💕", "🌸", "💗", "✨"];
+      heart.className = "heart";
+      heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (14 + Math.random() * 20) + "px";
+      heart.style.animationDuration = (6 + Math.random() * 5) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 12000);
+    }
+
+    function soltarCoracoes(quantidade) {
+      for (let i = 0; i < quantidade; i++) {
+        setTimeout(criarCoracao, i * 120);
+      }
+    }
+
+    setInterval(criarCoracao, 1000);
+    soltarCoracoes(6);
+    render();
+  </script>
+</body>
+</html>
